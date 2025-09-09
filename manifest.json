@@ -1,0 +1,35 @@
+{
+    "manifest_version": 2,
+    "name": "Block Downloads",
+    "version": "1.0",
+    "description": "Block downloads on Social websites",
+    "icons": {
+		"16": "images/dev_logo_16.png",
+		"48": "images/dev_logo_48.png",
+		"128": "images/dev_logo_128.png"
+	},
+    "permissions": [
+        "downloads",
+        "tabs",
+        "activeTab",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "background": {
+        "scripts": [
+            "scripts/tab-message-action.js",
+            "scripts/url-classifier.js", 
+            "scripts/policy-enforcer.js",
+            "scripts/background.js"
+        ],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+          "js": ["scripts/content.js"],
+          "matches": [
+            "*://*/*"
+          ]
+        }
+      ]
+  }
