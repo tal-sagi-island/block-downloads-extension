@@ -44,8 +44,15 @@ function sendDownloadBlockedMessageToTabWithRetry(tab) {
   sendDownloadBlockedMessageToTab(tab, () => sendDownloadBlockedMessageToTabCallback(tab));
 }
 
+function isUrlShouldScanDownloads(url) {
+  if (!url) {
+    return false;
+  }
+  return url.startsWith('http') || url.startsWith('https');
+}
+
 async function onDownloadCreate(downloadItem) {
-  if (!downloadItem.url) {
+  if (!isUrlShouldScanDownloads(downloadItem.url)) {
     return;
   }
   let verdict = Verdict.Allow;
