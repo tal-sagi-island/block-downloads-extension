@@ -2,7 +2,6 @@
 
 function cancelDownload(downloadItemId) {
   chrome.downloads.cancel(downloadItemId);
-  chrome.downloads.erase({ id: downloadItemId });
 }
 
 function injectContentScript(tabId, callback) {
