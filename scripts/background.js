@@ -24,22 +24,24 @@ function sendDownloadBlockedMessageToTab(tab, callback) {
   );
 }
 
-function sendDownloadBlockedMessageToTabWithRetry(tab) {
-  sendDownloadBlockedMessageToTab(tab, () => {
-    if (!chrome.runtime.lastError) {
+function sendDownloadBlockedMessageToTabCallback(tab) {
+  if (!chrome.runtime.lastError) {
+    return;
+  }
+
+  injectContentScript(tab.id, (success) => {
+    if (!success) {
       return;
     }
 
-    injectContentScript(tab.id, (success) => {
-      if (!success) {
-        return;
-      }
-
-      setTimeout(() => {
-        sendDownloadBlockedMessageToTab(tab);
-      }, 100);
-    });
+    setTimeout(() => {
+      sendDownloadBlockedMessageToTab(tab);
+    }, 100);
   });
+}
+
+function sendDownloadBlockedMessageToTabWithRetry(tab) {
+  sendDownloadBlockedMessageToTab(tab, () => sendDownloadBlockedMessageToTabCallback(tab));
 }
 
 async function onDownloadCreate(downloadItem) {
